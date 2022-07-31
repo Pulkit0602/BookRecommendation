@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width ,initial-select=1.0">
+    <title>Book Recommendation</title>
+    <link rel="stylesheet" href="\static\style\recommendation_style.css">
+    <link href="link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+
+    <!-- BootStrap CSS only -->
+    
+
+</head>
+<body>
+    <div class="header">
+        <div class="containeer">
+            <div class="navbar">
+                <div class="logo">
+                    <a href="/"><img src="\static\image\logo.JPG" width="125px"></a>
+                </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="/">Home</a></li>                                     
+                </ul>
+            </nav>
+            <img src="\static\image\menu.JPG" class="menu-icon" onclick="menutoggle()" width="30px" height="30px">   
+            </div>            
+        </div>
+    </div>
+
+    <div class="fromAround">
+    <form method="get">
+        {% csrf_token %}
+        <div class="form-group">
+          <label>Enter The Book: </label>
+          <br>
+          <input name="user_input" class="form-control" type="text" placeholder="Enter The Book">
+          <br>             
+        </div>
+        <button type="submit" class="button">Submit</button>
+        
+    </form>
+    </div>
+
+    {% if user_input != "None" %}
+    <!-------Recommendations-------> 
+        <h2 class="title"> Recommendations {{user_input}} </h2>     
+        <div class="categories">
+            <div class="small-container">
+                <div class="row">
+                    {% for i,j,k in recommend %} 
+                    <div class="column4">
+                        <a href='/books/{{i}}'><img src="{{k}}"></a>
+                        <div class="textLink">
+                            <h4><a href='/books/{{i}}'>{{i}}</a></h4>    
+                        </div>   
+
+                    </div>
+                    {% endfor %}                
+                </div>
+            </div>        
+        </div> 
+
+    {% endif %}
+
+    <!-------Book For You-------> 
+    <br>
+    <br>   
+    <h2 class="title"> TOP 50 Books </h2>     
+    <div class="carousel" data-flickity='{ "wrapAround": true, "autoPlay": true, "imagesLoaded":true ,"pageDots": false ,"groupCells": 4}'>       
+        
+        {% for item1, item2 in mylist %}              
+        <div class="carousel-cell" >                                  
+            <img class="carousel-image" src="{{item2}}">
+            <div class="textLink">
+                <h4><a href='/books/{{item1}}'>{{item1}}</a></h4>    
+            </div>            
+        </div> 
+        {% endfor %}                
+    </div>
+    <br>
+    <br>
+    
+    <!-------js for toggle menu-->
+    <script>
+        var MenuItems = document.getElementById("MenuItems");
+        
+        MenuItems.style.maxHeight = "0px";
+
+        function menutoggle(){
+            if(MenuItems.style.maxHeight == "0px")
+                {
+                MenuItems.style.maxHeight = "200px";
+            }
+            else{
+                MenuItems.style.maxHeight = "0px";
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    
+</body>
+</html>
